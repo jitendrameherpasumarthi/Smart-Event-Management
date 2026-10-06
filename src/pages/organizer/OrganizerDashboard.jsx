@@ -128,7 +128,7 @@ const OrganizerDashboard = () => {
     <div>
       <PageHeader
         title="Organizer Command Center"
-        subtitle={`Welcome, ${user.name}. Track live participant volumes, volunteer allocations, and operational tasks across all college events.`}
+        subtitle={`Welcome, ${currentUser?.name || 'Dr. Rajesh Verma'}. Track live participant volumes, volunteer allocations, and operational tasks across all college events.`}
       >
         <Link to="/organizer/events/create" className="btn btn-primary">
           <FiPlus />
@@ -148,7 +148,7 @@ const OrganizerDashboard = () => {
         />
         <StatCard
           title="Total Registrations"
-          value="2,185"
+          value={totalParticipants.toLocaleString()}
           icon={FiUsers}
           colorScheme="purple"
           trend="+18%"
@@ -159,14 +159,14 @@ const OrganizerDashboard = () => {
           value={totalVolunteers}
           icon={FiUserCheck}
           colorScheme="emerald"
-          description="Deployed across 6 venues"
+          description="Deployed across campus"
         />
         <StatCard
           title="Pending Tasks"
           value={pendingTasks}
           icon={FiCheckSquare}
           colorScheme="amber"
-          description="4 high priority"
+          description={`${urgentTasks.length} high priority`}
         />
       </div>
 
@@ -187,8 +187,8 @@ const OrganizerDashboard = () => {
             <FiActivity />
           </div>
           <div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Upcoming Events</div>
-            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>6 Events</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Active Events</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>{events.filter((e) => e.status !== 'Completed').length || 6} Events</div>
           </div>
         </div>
 
@@ -198,7 +198,7 @@ const OrganizerDashboard = () => {
           </div>
           <div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Completed Events</div>
-            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>2 Concluded</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>{events.filter((e) => e.status === 'Completed').length || 2} Concluded</div>
           </div>
         </div>
 
@@ -208,7 +208,7 @@ const OrganizerDashboard = () => {
           </div>
           <div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Task Completion Rate</div>
-            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>68% Executed</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>{completionRate}% Executed</div>
           </div>
         </div>
       </div>
@@ -401,16 +401,16 @@ const OrganizerDashboard = () => {
               </thead>
               <tbody>
                 {recentRegistrations.map((p) => (
-                  <tr key={p.id}>
+                  <tr key={p.id || p._id}>
                     <td>
-                      <div style={{ fontWeight: 600, fontSize: '0.85rem' }}>{p.name}</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{p.department}</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.85rem' }}>{p.name || p.studentName || 'Student'}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{p.department || 'General'}</div>
                     </td>
                     <td style={{ fontSize: '0.82rem', color: 'var(--primary)', fontWeight: 600 }}>
-                      {p.eventName.split(':')[0]}
+                      {((p.eventName || p.event?.title || p.title || 'Campus Event').split(':')[0])}
                     </td>
                     <td>
-                      <StatusBadge status={p.status} />
+                      <StatusBadge status={p.status || 'Confirmed'} />
                     </td>
                   </tr>
                 ))}
@@ -434,7 +434,7 @@ const OrganizerDashboard = () => {
           <div style={{ padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {urgentTasks.map((t) => (
               <div
-                key={t.id}
+                key={t.id || t._id}
                 style={{
                   padding: '0.75rem 1rem',
                   backgroundColor: '#f8fafc',
@@ -451,10 +451,10 @@ const OrganizerDashboard = () => {
                     {t.title}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {t.eventName} • Assignee: <strong>{t.assignedVolunteerName}</strong>
+                    {t.eventName || t.event?.title || 'Campus Event'} • Assignee: <strong>{t.assignedVolunteerName || t.assignedVolunteer?.name || 'Unassigned'}</strong>
                   </div>
                 </div>
-                <StatusBadge status={t.status} />
+                <StatusBadge status={t.status || 'Pending'} />
               </div>
             ))}
           </div>

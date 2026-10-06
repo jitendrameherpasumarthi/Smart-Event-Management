@@ -237,7 +237,7 @@ const VolunteerProfile = () => {
                 Skills & Logistics Expertise
               </h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                {user.skills.map((skill, i) => (
+                {(user.skills || []).map((skill, i) => (
                   <span
                     key={i}
                     style={{
@@ -257,7 +257,7 @@ const VolunteerProfile = () => {
 
               <div style={{ fontSize: '0.88rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.85rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>Availability: </span>
-                <strong>{user.availability}</strong>
+                <strong>{user.availability || 'Weekdays & Weekends'}</strong>
               </div>
             </div>
 
@@ -266,7 +266,7 @@ const VolunteerProfile = () => {
                 Assigned Event Responsibilities
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                {user.assignedEvents.map((evt, idx) => (
+                {(user.assignedEvents || []).map((evt, idx) => (
                   <div
                     key={idx}
                     style={{
@@ -279,7 +279,7 @@ const VolunteerProfile = () => {
                       color: 'var(--text-main)'
                     }}
                   >
-                    📍 {evt}
+                    📍 {typeof evt === 'object' ? (evt.title || evt.name) : evt}
                   </div>
                 ))}
               </div>

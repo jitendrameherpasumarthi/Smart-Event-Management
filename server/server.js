@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 // Config & Database
@@ -121,6 +122,20 @@ app.use('/api/schedules', scheduleRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+
+// ==========================================
+// Static Assets & SPA Routing Fallback
+// ==========================================
+const distPath = path.join(__dirname, '../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api')) {
+      return next();
+    }
+    return res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 // ==========================================
 // Centralized Error Handling

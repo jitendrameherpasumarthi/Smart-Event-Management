@@ -104,27 +104,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Demo Mode Alert */}
-        <div
-          style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: 'var(--radius-md)',
-            padding: '0.75rem 1rem',
-            marginBottom: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.65rem',
-            fontSize: '0.8rem',
-            color: '#1e40af'
-          }}
-        >
-          <FiInfo style={{ fontSize: '1.25rem', flexShrink: 0 }} />
-          <span>
-            <strong>Connected Backend:</strong> Choose a demo role below to load credentials or enter your account.
-          </span>
-        </div>
-
         {/* Role Selector Tabs */}
         <div style={{ marginBottom: '1.5rem' }}>
           <label className="form-label" style={{ marginBottom: '0.5rem' }}>

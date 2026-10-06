@@ -104,14 +104,14 @@ const EventTable = ({
                 <td style={{ textAlign: 'right' }}>
                   <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
                     <Link
-                      to={`/events/${event.id}`}
+                      to={`/events/${event.id || event._id}`}
                       className="btn-icon btn-ghost"
                       title="View Event Details"
                     >
                       <FiEye style={{ fontSize: '1rem' }} />
                     </Link>
                     <Link
-                      to={`/organizer/events/edit/${event.id}`}
+                      to={`/organizer/events/edit/${event.id || event._id}`}
                       className="btn-icon btn-ghost"
                       title="Edit Event"
                     >
