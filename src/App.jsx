@@ -62,7 +62,7 @@ const ProtectedRoute = ({ allowedRole, children }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Smart-Event-Management">
       <Routes>
         {/* Public Routes with MainLayout */}
         <Route element={<MainLayout />}>
